@@ -2,8 +2,4 @@
 
 # script that uses ssh to connect to your server using the private key ~/.ssh/school with the user ubuntu
 
-private_key=~/.ssh/school
-remote_user=ubuntu
-remote_host=100.26.235.153
-
-ssh -i "$private_key" "$remote_user@$remote_host"
+ssh -i ./.ssh/school ubuntu@100.26.235.153
