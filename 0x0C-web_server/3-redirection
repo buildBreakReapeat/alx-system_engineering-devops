@@ -3,6 +3,8 @@
 
 REDIRECT_conf="location /redirect_me {\nreturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}\n"
 FILE="/etc/nginx/sites-available/default"
+apt-get -y update
+apt-get -y install nginx
 ufw allow "Nginx HTTP"
 
 sed -i "40i\ $REDIRECT_conf" "$FILE"
