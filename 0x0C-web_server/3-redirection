@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Configure your Nginx server so that /redirect_me is redirecting to another page
+
+REDIRECT_conf="location /redirect_me {\nreturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}\n"
+FILE="/etc/nginx/sites-available/default"
+ufw allow "Nginx HTTP"
+
+sudo sed -i "40i\ $REDIRECT_conf" "$FILE"
+
+sudo service nginx restart
+
