@@ -9,5 +9,7 @@ ufw allow "Nginx HTTP"
 
 sed -i "40i\ $REDIRECT_conf" "$FILE"
 
+echo "=G" | sudo vi "$FILE"
+
 service nginx restart
 
