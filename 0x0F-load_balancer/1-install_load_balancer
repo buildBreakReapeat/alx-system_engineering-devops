@@ -4,9 +4,9 @@
 #+    Enables management via the init script.
 #+    Distributes requests using a round-robin algorithm.
 
-apt-get install --no-install-recommends software-properties-common
-add-apt-repository ppa:vbernat/haproxy-2.0
-apt-get update
+apt-get install -y --no-install-recommends software-properties-common
+add-apt-repository ppa:vbernat/haproxy-2.0 -y
+apt-get -y update
 apt-get install -y haproxy=2.0.\*
 
 echo "ENABLED=1" >> /etc/default/haproxy
@@ -42,4 +42,4 @@ listen hbnb
     server 1733-web-02 3.227.3.18:80 check
 " >> /etc/haproxy/haproxy.cfg
 
-service haproxy start
+service haproxy restart
