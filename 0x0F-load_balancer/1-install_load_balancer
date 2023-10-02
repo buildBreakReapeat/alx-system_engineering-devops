@@ -3,9 +3,9 @@
 #+    Enables management via the init script.
 #+    Distributes requests using a round-robin algorithm.
 
+apt-get -y update
 apt-get install -y --no-install-recommends software-properties-common
 add-apt-repository ppa:vbernat/haproxy-2.0 -y
-apt-get -y update
 apt-get install -y haproxy=2.0.\*
 
 cat << EOF > /etc/haproxy/haproxy.cfg
@@ -37,7 +37,7 @@ backend servers
 EOF
 
 # Configure HAProxy to be managed via init script
-sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/haproxy
+sudo sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/haproxy
 
 # Restart HAProxy service
-service haproxy restart
+sudo service haproxy restart
