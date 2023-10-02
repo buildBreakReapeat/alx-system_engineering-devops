@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 #installs HAProxy version 2.0 with the following configurations:
-#+    Enables management via the init script.
-#+    Distributes requests using a round-robin algorithm.
 
 apt-get -y update
 apt-get install -y --no-install-recommends software-properties-common
