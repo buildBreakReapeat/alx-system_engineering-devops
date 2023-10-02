@@ -1,25 +1,21 @@
 #!/usr/bin/env bash
-#installs HAProxy version 2.0 with the following configurations:
+#install and configure HAproxy on your lb-01 server
+sudo apt-get -y update
 
-apt-get -y update
-apt-get install -y --no-install-recommends software-properties-common
-add-apt-repository ppa:vbernat/haproxy-2.0 -y
-apt-get install -y haproxy=2.0.\*
+sudo apt-get -y install haproxy
 
-cat << EOF >> /etc/haproxy/haproxy.cfg
-frontend http-in
-    bind *:80
-    default_backend servers
+frontend_config="frontend http-in"
+frontend_config+="\n\tbind *:80"
+frontend_config+="\n\tdefault_backend servers"
 
-backend servers
-    balance roundrobin
-    server 384026-web-01 100.26.235.153:80 check
-    server 384026-web-02 52.91.118.87:80 check
-EOF
+backend_config="backend servers"
+backend_config+="\n\tbalance roundrobin"
+backend_config+="\n\tserver 384026-web-01 100.26.235.153:80 check"
+backend_config+="\n\tserver 384026-web-02 52.91.118.87:80 check"
 
-# Configure HAProxy to be managed via init script
-sudo sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/haproxy
+haproxy_config="/etc/haproxy/haproxy.cfg"
 
-# Restart HAProxy service
-sudo service haproxy start
+echo -e "$frontend_config" | sudo tee -a "$haproxy_config" > /dev/null
+echo -e "$backend_config" | sudo tee -a "$haproxy_config" > /dev/null
 
+sudo service haproxy restart
