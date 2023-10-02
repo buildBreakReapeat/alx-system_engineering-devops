@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 #installs HAProxy version 2.0 with the following configurations:
 #+    Enables management via the init script.
 #+    Distributes requests using a round-robin algorithm.
@@ -9,11 +8,8 @@ add-apt-repository ppa:vbernat/haproxy-2.0 -y
 apt-get -y update
 apt-get install -y haproxy=2.0.\*
 
-echo "ENABLED=1" >> /etc/default/haproxy
-mv /etc/haproxy/haproxy.cfg{,.original}
-touch /etc/haproxy/haproxy.cfg
-
-printf %s "global
+cat << EOF > /etc/haproxy/haproxy.cfg
+global
     log 127.0.0.1 local0 notice
     maxconn 2000
     user haproxy
@@ -30,16 +26,18 @@ defaults
     timeout client  10000
     timeout server  10000
 
-listen hbnb
-    bind 0.0.0.0:80
-    mode http
-    stats enable
-    stats uri /haproxy?stats
-    balance roundrobin
-    option httpclose
-    option forwardfor
-    server 1733-web-01 3.235.21.36:80 check
-    server 1733-web-02 3.227.3.18:80 check
-" >> /etc/haproxy/haproxy.cfg
+frontend http-in
+    bind *:80
+    default_backend servers
 
+backend servers
+    balance roundrobin
+    server 384026-web-01 100.26.235.153:80 check
+    server 384026-web-02 52.91.118.87:80 check
+EOF
+
+# Configure HAProxy to be managed via init script
+sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/haproxy
+
+# Restart HAProxy service
 service haproxy restart
