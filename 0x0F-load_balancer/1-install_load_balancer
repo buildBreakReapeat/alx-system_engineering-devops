@@ -21,5 +21,5 @@ EOF
 sudo sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/haproxy
 
 # Restart HAProxy service
-sudo service haproxy restart
+sudo service haproxy start
 
