@@ -32,8 +32,8 @@ frontend http-in
 
 backend servers
     balance roundrobin
-    server 384026-web-01 100.26.235.153:80 check
-    server 384026-web-02 52.91.118.87:80 check
+    server ${hostname} 100.26.235.153:80 check
+    server ${hostname} 52.91.118.87:80 check
 EOF
 
 # Configure HAProxy to be managed via init script
