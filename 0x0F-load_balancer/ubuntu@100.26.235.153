@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# script that transfers a file from our client to a server
+
+HEADER="\n\tadd_header X-Served-By $(hostname);\n"
+REDIRECT_ERROR="error_page 404 /xyz;\n\t location = /xyz {\n\troot /var/www/html;\n\tinternal;}\n"
+REDIRECT_conf="location /redirect_me {\nreturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}\n"
+FILE="/etc/nginx/sites-available/default"
+apt-get -y update
+apt-get -y install nginx
+ufw allow "Nginx HTTP"
+
+
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/xyz
+echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
+sudo sed -i "40i\ $REDIRECT_conf" "$FILE"
+sudo sed -i "44i\ $REDIRECT_ERROR" "$FILE"
+sudo sed -i "44i\ $HEADER" "$FILE"
+
+vi -c "=G" -c "wq" "$FILE"
+
+sudo service nginx restart
+
