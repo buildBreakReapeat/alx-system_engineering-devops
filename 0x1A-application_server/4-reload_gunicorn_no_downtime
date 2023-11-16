@@ -2,4 +2,4 @@
 # Reloads Gunicorn.
 
 # Use pgrep instead of ps and grep to find the process ID of gunicorn
-pgrep gunicorn | xargs kill -HUP
+systemctl status gunicorn | grep -oE 'Main PID: [0-9]+' | cut -d ' ' -f3 | xargs kill -HUP
