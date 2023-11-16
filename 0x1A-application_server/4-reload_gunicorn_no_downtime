@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Reloads Gunicorn workers
 
-ps aux | grep gunicorn | awk '{ print $2 }' | xargs kill -HUP
+pgrep gunicorn | awk '{ print $2 }' | xargs kill -HUP
